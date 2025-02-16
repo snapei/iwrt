@@ -23,7 +23,7 @@ Signed-off-by: Jonathan Bell <jonathan@raspberrypi.org>
 
 --- a/drivers/hid/hid-ids.h
 +++ b/drivers/hid/hid-ids.h
-@@ -242,6 +242,9 @@
+@@ -243,6 +243,9 @@
  #define USB_VENDOR_ID_BAANTO		0x2453
  #define USB_DEVICE_ID_BAANTO_MT_190W2	0x0100
  
