@@ -61,6 +61,56 @@ make4.1+ perl python3.7+ rsync subversion unzip which
 4. Run `make` to build your firmware. This will download all sources, build the
    cross-compile toolchain and then cross-compile the GNU/Linux kernel & all chosen
    applications for your target system.
+### 编译命令
+1. 首先装好 Linux 系统，推荐 Debian 或 Ubuntu LTS
+   不要用 root 用户进行编译
+   
+   国内用户编译前最好准备好梯子
+   
+   默认登陆IP 10.0.0.1 密码 空
+   
+   `git clone -b iwrt-24.10 https://github.com/snapei/iwrt.git`
+3. 安装编译依赖
+   ```
+   sudo apt update -y
+   sudo apt full-upgrade -y
+   sudo apt install -y ack antlr3 asciidoc autoconf automake autopoint binutils bison build-essential \
+   bzip2 ccache clang cmake cpio curl device-tree-compiler flex gawk gcc-multilib g++-multilib gettext \
+   genisoimage git gperf haveged help2man intltool libc6-dev-i386 libelf-dev libfuse-dev libglib2.0-dev \
+   libgmp3-dev libltdl-dev libmpc-dev libmpfr-dev libncurses5-dev libncursesw5-dev libpython3-dev \
+   libreadline-dev libssl-dev libtool llvm lrzsz msmtp ninja-build p7zip p7zip-full patch pkgconf \
+   python3 python3-pyelftools python3-setuptools qemu-utils rsync scons squashfs-tools subversion \
+   swig texinfo uglifyjs upx-ucl unzip vim wget xmlto xxd zlib1g-dev screen htop
+   ```
+4. 下载源代码，更新 feeds 并选择配置
+   ```
+   git clone -b iwrt-24.10 https://github.com/snapei/iwrt.git
+   cd iwrt
+   ./scripts/feeds update -a
+   ./scripts/feeds install -a
+   make menuconfig
+   ```
+5. 下载 dl 库，编译固件 （-j 后面是线程数，第一次编译推荐用单线程）
+   ```
+   make download -j8
+   make V=s -j1 或者 make V=s -j$(nproc)
+   ```
+6. 二次编译：
+   ```
+   cd iwrt
+   git pull
+   ./scripts/feeds update -a
+   ./scripts/feeds install -a
+   make defconfig
+   make download -j8
+   make V=s -j$(nproc)
+   ```
+7. 如果需要重新配置：
+   ```
+   rm -rf .config
+   make menuconfig
+   make V=s -j$(nproc)
+   ```
 
 ### Related Repositories
 
